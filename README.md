@@ -54,6 +54,11 @@ npm install react-native-accessibility-controller
 yarn add react-native-accessibility-controller
 ```
 
+> **Note:** The npm package is in development and will be published soon. In the meantime, install directly from GitHub:
+> ```bash
+> npm install github:bedda-tech/react-native-accessibility-controller
+> ```
+
 ### Requirements
 
 - React Native >= 0.76 (New Architecture)
