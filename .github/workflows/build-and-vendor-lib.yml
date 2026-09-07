@@ -16,26 +16,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.29.2
-          run_install: false
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           package-manager-cache: false
 
+      - name: Verify package manager inputs
+        run: |
+          test -f package.json
+          test -f package-lock.json
+          node --version
+          npm --version
+
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: npm ci
 
       - name: Build package
-        run: pnpm build
+        run: npm run build
 
       - name: Verify generated entrypoint
-        run: test -f lib/commonjs/index.js
+        run: |
+          test -f lib/commonjs/index.js
+          node -e "const p=require('./package.json'); const fs=require('fs'); if(p.main!=='lib/commonjs/index.js') throw new Error('Unexpected main: '+p.main); if(!fs.existsSync(p.main)) throw new Error('Missing main: '+p.main); console.log('Verified '+p.main)"
 
       - name: Vendor generated lib
         run: |
